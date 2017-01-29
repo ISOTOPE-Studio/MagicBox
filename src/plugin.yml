@@ -1,0 +1,12 @@
+name: MagicBox
+main: cc.isotopestudio.magicbox.MagicBox
+
+author: Mars
+description: MagicBox
+website: http://isotopestudio.cc
+version: 1.0.0
+
+commands:
+  box:
+    description: box
+    usage: /<command>
