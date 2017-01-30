@@ -78,7 +78,7 @@ public class BoxCommand implements CommandExecutor {
                 double sum = 0;
                 double[] luckAcc = new double[luckList.size()];
                 for (i = 0; i < luckList.size(); i++) {
-                    double v = 1.0 / luckList.get(i);
+                    double v = luckList.get(i);
                     luckAcc[i] = sum + v;
                     sum += v;
                 }
@@ -92,8 +92,14 @@ public class BoxCommand implements CommandExecutor {
                     }
                     break;
                 }
-                receiver.getInventory().addItem(items.get(i));
+                ItemStack item = items.get(i);
+                receiver.getInventory().addItem(item);
+
+                receiver.sendMessage(S.toPrefixGreen("您获得了" + args[2] + "容器的物品: " +
+                        (item.hasItemMeta() && item.getItemMeta().hasDisplayName()
+                                ? item.getItemMeta().getDisplayName() : item.getType().name())));
                 player.sendMessage(S.toPrefixGreen("成功"));
+                return true;
             }
             if (args[0].equalsIgnoreCase("list")) {
                 player.sendMessage(S.toPrefixYellow(data.getKeys(false).toString()));
