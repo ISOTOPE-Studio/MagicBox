@@ -25,13 +25,8 @@ public class BoxCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("box")) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(S.toPrefixRed("玩家执行的命令"));
-                return true;
-            }
-            Player player = (Player) sender;
-            if (!player.hasPermission("box.admin")) {
-                player.sendMessage(S.toPrefixRed("你没有权限"));
+            if (!sender.hasPermission("box.admin")) {
+                sender.sendMessage(S.toPrefixRed("你没有权限"));
                 return true;
             }
 
@@ -42,6 +37,11 @@ public class BoxCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("add")) {
                 if (args.length < 3) {
                     sendHelpPage1(label, sender);
+                    return true;
+                }
+                Player player = (Player) sender;
+                if (!player.hasPermission("box.admin")) {
+                    player.sendMessage(S.toPrefixRed("你没有权限"));
                     return true;
                 }
                 int odd;
@@ -62,12 +62,12 @@ public class BoxCommand implements CommandExecutor {
                 }
                 Player receiver = Bukkit.getPlayer(args[1]);
                 if (receiver == null) {
-                    player.sendMessage(S.toPrefixRed("玩家不存在"));
+                    sender.sendMessage(S.toPrefixRed("玩家不存在"));
                     return true;
                 }
                 Map<ItemStack, Integer> box = Box.getBox(args[2]);
                 if (box.keySet().size() == 0) {
-                    player.sendMessage(S.toPrefixRed("容器不存在"));
+                    sender.sendMessage(S.toPrefixRed("容器不存在"));
                     return true;
                 }
 
@@ -98,16 +98,16 @@ public class BoxCommand implements CommandExecutor {
                 receiver.sendMessage(S.toPrefixGreen("您获得了" + args[2] + "容器的物品: " +
                         (item.hasItemMeta() && item.getItemMeta().hasDisplayName()
                                 ? item.getItemMeta().getDisplayName() : item.getType().name())));
-                player.sendMessage(S.toPrefixGreen("成功"));
+                sender.sendMessage(S.toPrefixGreen("成功"));
                 return true;
             }
             if (args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(S.toPrefixYellow(data.getKeys(false).toString()));
+                sender.sendMessage(S.toPrefixYellow(data.getKeys(false).toString()));
                 return true;
             }
             if (args[0].equalsIgnoreCase("reload")) {
                 plugin.onReload();
-                player.sendMessage(S.toPrefixGreen("成功"));
+                sender.sendMessage(S.toPrefixGreen("成功"));
                 return true;
             }
             sendHelpPage1(label, sender);
