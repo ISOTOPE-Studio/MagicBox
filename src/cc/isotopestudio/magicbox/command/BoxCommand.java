@@ -94,11 +94,12 @@ public class BoxCommand implements CommandExecutor {
                 }
                 ItemStack item = items.get(i);
                 receiver.getInventory().addItem(item);
-
+                receiver.updateInventory();
                 receiver.sendMessage(S.toPrefixGreen("您获得了" + args[2] + "容器的物品: " +
                         (item.hasItemMeta() && item.getItemMeta().hasDisplayName()
                                 ? item.getItemMeta().getDisplayName() : item.getType().name())));
-                sender.sendMessage(S.toPrefixGreen("成功"));
+                if (sender instanceof Player)
+                    sender.sendMessage(S.toPrefixGreen("成功"));
                 return true;
             }
             if (args[0].equalsIgnoreCase("list")) {
